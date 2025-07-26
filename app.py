@@ -1,8 +1,7 @@
 import streamlit as st
 import requests
 
-# LibreTranslate endpoint
-API_URL = "https://fr.libretranslate.com/translate"
+API_URL = "https://translate.argosopentech.com/translate"
 
 def translate(text, source="en", target="ml"):
     payload = {
@@ -21,13 +20,12 @@ def translate(text, source="en", target="ml"):
     except Exception as e:
         return f"Error: {str(e)}"
 
-# Streamlit app UI
-st.title("English to Malayalam Translator 🌐")
-user_input = st.text_area("Enter English Text:", height=150)
+st.title("English to Malayalam Translator 🗣️🌐")
+user_input = st.text_area("Enter English Text", height=150)
 
 if st.button("Translate"):
     if user_input.strip():
         translation = translate(user_input.strip())
         st.success(translation)
     else:
-        st.warning("⚠️ Please enter some text to translate.")
+        st.warning("⚠️ Please enter some text.")
