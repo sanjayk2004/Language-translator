@@ -19,7 +19,7 @@ if st.button("Translate"):
         }
 
         # Use actual translation API endpoint
-        api_url = "https://translate.argosopentech.com/translate"
+        api_url = "https://libretranslate.de/translate"
 
         response = requests.post(api_url, data=payload, headers=headers)
 
