@@ -1,35 +1,33 @@
 import streamlit as st
 import requests
 
-st.title("English to Malayalam Translator")
+# LibreTranslate endpoint
+API_URL = "https://fr.libretranslate.com/translate"
 
-text = st.text_area("Enter English text:")
+def translate(text, source="en", target="ml"):
+    payload = {
+        "q": text,
+        "source": source,
+        "target": target,
+        "format": "text"
+    }
+
+    try:
+        response = requests.post(API_URL, json=payload, timeout=10)
+        if response.status_code == 200:
+            return response.json()["translatedText"]
+        else:
+            return f"Translation failed: {response.text}"
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+# Streamlit app UI
+st.title("English to Malayalam Translator 🌐")
+user_input = st.text_area("Enter English Text:", height=150)
 
 if st.button("Translate"):
-    if text.strip():
-        payload = {
-            'q': text,
-            'source': 'en',
-            'target': 'ml',
-            'format': 'text'
-        }
-
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-
-        # Use actual translation API endpoint
-        api_url = "https://libretranslate.de/translate"
-
-        response = requests.post(api_url, data=payload, headers=headers)
-
-        if response.status_code == 200:
-            try:
-                result = response.json()
-                st.success(result['translatedText'])
-            except Exception:
-                st.error("Error parsing translation response.")
-        else:
-            st.error(f"Translation failed. Status: {response.status_code}")
+    if user_input.strip():
+        translation = translate(user_input.strip())
+        st.success(translation)
     else:
-        st.warning("Please enter some text.")
+        st.warning("⚠️ Please enter some text to translate.")
